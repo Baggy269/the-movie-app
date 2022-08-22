@@ -1,6 +1,6 @@
 # Users Repository:
 
-name@sumerge.com    password
+name@sumerge.com    password <br />
 test@email.com    123456
 
 
