@@ -36,8 +36,6 @@ body .login__group__label {
   position: absolute;
   z-index: 150;
   color: #b3b3b3;
-  font-size: 0.9rem;
-  top: 50px;
   left: 18px;
   transition: all 300ms ease-in;
   will-change: transform;
@@ -57,11 +55,6 @@ body .login__group__input {
   color: #fff;
   line-height: 50px;
   padding: 18px 18px 0;
-}
-
-body .login__group__input:focus+.login__group__label {
-  top: 35px;
-  font-size: 0.7rem;
 }
 
 body .login__sign-in {

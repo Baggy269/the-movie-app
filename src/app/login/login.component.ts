@@ -16,6 +16,10 @@ export class LoginComponent {
   correctUsername : boolean = false;
   correctPassword : boolean = false;
   errorMessage : string = '';
+  fontSizeEmail : string = '0.9rem';
+  topEmail : string = '50px';
+  fontSizePassword : string = '0.9rem';
+  topPassword : string = '50px';
 
   users : User[] = this.usersService.getUsers();
   
@@ -44,5 +48,17 @@ export class LoginComponent {
     }
     localStorage.setItem('loggedIn','true');
     this.router.navigate(["/catalog-component"]);
+  }
+
+  onFocus(isEmail : boolean){
+    if(isEmail){
+      this.fontSizeEmail = '0.7rem'
+      this.topEmail = '35px'
+    }
+    else{
+      this.fontSizePassword = '0.7rem'
+      this.topPassword = '35px'
+    }
+
   }
 }
