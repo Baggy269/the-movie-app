@@ -1,0 +1,36 @@
+<mat-toolbar color="primary" style="background-color: rgb(0, 0, 0, 0.75);">
+    <button routerLink="/catalog-component"
+        style="cursor: pointer; background-color: rgb(0, 0, 0, 0);border: none; padding:1%;">
+        <h3 style="color: white;">Top Movies</h3>
+    </button>
+    <div style="position: absolute; right: 1%">
+        <button style="color: white;" routerLink="" type="button"
+            class="btn btn-default btn-sm" (click)="logout()">
+            <span class="glyphicon glyphicon-log-out">Log out</span>
+        </button>
+    </div>
+</mat-toolbar>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-3 xs-8">
+            <div class="card" style="background-color: rgba(0, 0, 0, 0.75); color:white;">
+                <div class="card-horizontal" style="display: flex; flex: 1 1 auto;">
+                    <div class="img-square-wrapper">
+                        <img class="card-img-top" style="width: 200px; height:300px" [src]="posterPrefix+poster_path"
+                            [alt]="title">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ title }}</h4>
+                        <p class="card-text">{{ overview }}</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">
+                        <span style="position: absolute; right: 16px;">&#11088;{{ vote_average }}/10</span>
+                        <span>Release date: {{ release_date }}</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
