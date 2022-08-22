@@ -12,6 +12,7 @@ body {
     background-blend-mode: multiply;
     background-attachment: fixed;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 body {

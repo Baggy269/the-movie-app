@@ -8,15 +8,18 @@
     <h1 class="login__title">Sign in</h1>
     <form>
       <div class="login__group">
-        <input class="login__group__input" (focus)="onFocus(true)" name="username" type="username" required="true" [(ngModel)]="username" />
+        <input class="login__group__input" (focus)="onFocus(true)" (blur)="onBlur()" name="username" type="username"
+          required="true" [(ngModel)]="username" />
         <label class="login__group__label" [style.font-size]="fontSizeEmail" [style.top]="topEmail">Email</label>
       </div>
       <span *ngIf="!correctUsername" style="color: orange;">{{ errorMessage }}</span>
       <div class="login__group">
-        <input class="login__group__input" (focus)="onFocus(false)" name="password" type="password" required="true" [(ngModel)]="password" />
-        <label class="login__group__label" [style.font-size]="fontSizePassword" [style.top]="topPassword">Password</label>
+        <input class="login__group__input" (focus)="onFocus(false)" (blur)="onBlur()" name="password" type="password"
+          required="true" [(ngModel)]="password" />
+        <label class="login__group__label" [style.font-size]="fontSizePassword"
+          [style.top]="topPassword">Password</label>
       </div>
-      <span *ngIf="!correctPassword && correctUsername" style="color: orange;">{{ errorMessage }}</span>
+      <span *ngIf="true" style="color: orange;">{{ errorMessage }}</span>
       <button class="login__sign-in" type="submit" (click)="login()">Sign In</button>
     </form>
   </div>

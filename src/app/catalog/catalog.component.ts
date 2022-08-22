@@ -17,7 +17,6 @@ export class CatalogComponent implements OnInit {
   topRatedUrl2: string = '&vote_count.gte=10000&with_watch_monetization_types=flatrate';
   posterPrefix: string = 'https://image.tmdb.org/t/p/w500';
   movies: Movie[] = [];
-  scrolledDown: boolean = false;
 
   constructor(private http: HttpClient, private router: Router) { }
 

@@ -59,6 +59,17 @@ export class LoginComponent {
       this.fontSizePassword = '0.7rem'
       this.topPassword = '35px'
     }
+  }
+
+  onBlur(){
+      if(this.username == ''){
+        this.fontSizeEmail = '0.9rem'
+        this.topEmail = '50px'
+      }
+      if(this.password == ''){
+        this.fontSizePassword = '0.9rem'
+        this.topPassword = '50px'
+      }
 
   }
 }
