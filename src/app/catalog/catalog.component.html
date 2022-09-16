@@ -22,10 +22,10 @@
 </div>
 <br>
 <div class="d-flex justify-content-center">
-  <button *ngIf="totalPages>=pageNumber" type="button" class="load__more" (click)="fetchMoreMovies()">
+  <button *ngIf="totalPages-1>=nextPage" type="button" class="load__more" (click)="fetchMoreMovies()">
     Load More
   </button>
-  <button *ngIf="totalPages>=pageNumber+1" type="button" class="load__more" (click)="topFunction()">
+  <button type="button" class="load__more" (click)="topFunction()">
     &#8593;
   </button>
 </div>

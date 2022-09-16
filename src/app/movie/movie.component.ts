@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {Movie} from "../movie.model";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-movie',
@@ -13,16 +15,31 @@ export class MovieComponent implements OnInit {
   overview : string= '';
   vote_average : string = '';
   release_date : string = '';
-  
-  constructor(private route : ActivatedRoute) { }
+  // @ts-ignore
+  jwt: string = localStorage.getItem("jwt");
+  headerDict = {
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + this.jwt
+  }
+  id: string = "";
+
+  constructor(private route : ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.title = this.route.snapshot.queryParamMap.get('title')!;
-    this.poster_path = this.route.snapshot.queryParamMap.get('poster_path')!;
-    this.overview = this.route.snapshot.queryParamMap.get('overview')!;
-    this.vote_average = this.route.snapshot.queryParamMap.get('vote_average')!;
-    this.release_date = this.route.snapshot.queryParamMap.get('release_date')!;
+    this.id = this.route.snapshot.params['id'];
+    this.http.get<{ title: string, poster_path: string, overview: string, vote_average: string, release_date: string }>
+    ("http://localhost:8080/movie/" + this.id, {"headers": this.headerDict})
+      .subscribe(responseData => {
+        this.title = responseData['title'];
+        this.poster_path = responseData['poster_path'];
+        this.overview = responseData['overview'];
+        this.vote_average = responseData['vote_average'];
+        this.release_date = responseData['release_date'];
+      })
   }
+
 
   logout() {
     localStorage.setItem('loggedIn', 'false');

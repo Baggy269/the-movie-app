@@ -19,7 +19,7 @@
         <label class="login__group__label" [style.font-size]="fontSizePassword"
           [style.top]="topPassword">Password</label>
       </div>
-      <span *ngIf="true" style="color: orange;">{{ errorMessage }}</span>
+      <span *ngIf="!correctPassword" style="color: orange;">{{ errorMessage }}</span>
       <button class="login__sign-in" type="submit" (click)="login()">Sign In</button>
     </form>
   </div>

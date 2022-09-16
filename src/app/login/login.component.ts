@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from './user.model';
 import { UsersService } from './users.service';
+import {Movie} from "../movie.model";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 
 
 @Component({
@@ -22,32 +24,31 @@ export class LoginComponent {
   topPassword : string = '50px';
 
   users : User[] = this.usersService.getUsers();
-  
+
+  headerDict = {
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  }
+
   constructor(private router: Router,
-              private usersService : UsersService) { }
+              private usersService : UsersService, private http: HttpClient) { }
 
   login(){
-    var flag = false;
-    this.users.forEach(user=>{
-      if(user.username == this.username){
-        this.correctUsername=true;
-        flag = true;
-        if(this.password == user.password)
-          this.correctPassword = true;
-      }
-    })
-    this.correctUsername = flag;
-    console.log(this.username, this.correctUsername, this.password, this.correctPassword)
-    if(!this.correctUsername){
-      this.errorMessage = 'Please enter a valid email.';
-      return;
-    }
-    if(!this.correctPassword){
-      this.errorMessage = 'Incorrect Password.'
-      return;
-    }
-    localStorage.setItem('loggedIn','true');
-    this.router.navigate(["/catalog-component"]);
+    this.http.post<{ token: string }>("http://localhost:8080/authenticate",
+      {"username":this.username,"password":this.password},{"headers":this.headerDict})
+      .subscribe(responseData => {
+        let token = responseData['token'] ? responseData['token'] : "" ;
+        localStorage.setItem("jwt", token);
+          localStorage.setItem('loggedIn','true');
+          this.router.navigate(["/catalog-component"]);
+      },
+        (error: HttpErrorResponse)=>{
+        this.correctPassword = false
+          this.correctUsername = true;
+        this.errorMessage = 'Invalid credentials.'
+          return;
+        })
   }
 
   onFocus(isEmail : boolean){

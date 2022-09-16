@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Movie } from '../movie.model';
 import { Router } from '@angular/router';
@@ -10,14 +10,20 @@ import { Router } from '@angular/router';
 })
 
 export class CatalogComponent implements OnInit {
-  pageNumber: number = 1;
+  nextPage: number = 0;
   totalPages: number = 1;
   selected: number = -1;
-  topRatedUrl: string = 'https://api.themoviedb.org/3/discover/movie?api_key=4611f52c874578f1e74a6f29ccbefb1e&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=';
-  topRatedUrl2: string = '&vote_count.gte=10000&with_watch_monetization_types=flatrate';
+  topRatedUrl: string = 'http://localhost:8080/movies/';
   posterPrefix: string = 'https://image.tmdb.org/t/p/w500';
   movies: Movie[] = [];
-
+  // @ts-ignore
+  jwt: string = localStorage.getItem("jwt");
+  headerDict = {
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + this.jwt
+  }
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
@@ -25,36 +31,26 @@ export class CatalogComponent implements OnInit {
   }
 
   private fetchMovies() {
-    this.http.get<{ page: number, results: Movie[], total_pages: number }>(this.topRatedUrl + this.pageNumber + this.topRatedUrl2)
+    this.http.get<{ currentPage: number, movies: Movie[], totalPages: number }>(this.topRatedUrl + this.nextPage, {"headers":this.headerDict})
       .subscribe(responseData => {
-        this.movies = responseData['results'];
-        this.totalPages = responseData['total_pages'];
+        this.movies = responseData['movies'];
+        this.totalPages = responseData['totalPages'];
       })
-    this.pageNumber++;
+    this.nextPage++;
   }
 
   fetchMoreMovies() {
-    if (this.pageNumber > this.totalPages)
+    if (this.nextPage >= this.totalPages)
       return
-    this.http.get<{ page: number, results: Movie[] }>(this.topRatedUrl + this.pageNumber + this.topRatedUrl2)
+    this.http.get<{ currentPage: number, movies: Movie[] }>(this.topRatedUrl + this.nextPage, {"headers":this.headerDict})
       .subscribe(responseData => {
-        this.movies = this.movies.concat(responseData['results']);
-        console.log(responseData['results'])
-
+        this.movies = this.movies.concat(responseData['movies']);
       })
-    this.pageNumber++;
+    this.nextPage++;
   }
 
   onClick(index: number) {
-    this.router.navigate(["/catalog-component/" + index], {
-      queryParams: {
-        title: this.movies[index].title,
-        poster_path: this.movies[index].poster_path,
-        overview: this.movies[index].overview,
-        vote_average: this.movies[index].vote_average,
-        release_date: this.movies[index].release_date
-      }
-    });
+    this.router.navigate(["/catalog-component/" + this.movies[index].id]);
   }
 
   logout() {
