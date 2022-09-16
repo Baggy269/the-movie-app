@@ -1,7 +1,7 @@
 # Users Repository:
 
-name@sumerge.com    password <br />
-test@email.com    123456
+user1    password <br />
+user2    pass2
 
 
 # TheMovieApp
